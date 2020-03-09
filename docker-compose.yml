@@ -1,0 +1,48 @@
+version:  '3'
+services:
+  server:
+    build: ./services
+    # links this service to another container. See https://medium.com/@shamir.stav_83310/dockerizing-a-flask-mysql-app-with-docker-compose-c4f51d20b40d
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    networks:
+      db_netw:
+        ipv4_address: 172.31.0.4
+    volumes:
+      - .:/var/lib/airplane_service
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3307"
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Flights
+      MYSQL_USER: bmc
+      MYSQL_PASSWORD: student
+    networks:
+      db_netw:
+        ipv4_address: 172.31.0.2
+    volumes:
+      - ./db_data_homew2:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: always
+
+volumes:
+  db_data_homew2: {}
+
+# See https://github.com/docker/labs/blob/master/networking/A2-bridge-networking.md
+# and https://docs.docker.com/compose/networking/
+networks:
+  db_netw:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: "172.31.0.0/16"
+

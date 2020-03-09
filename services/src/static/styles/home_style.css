@@ -1,0 +1,96 @@
+html, body, main {
+  height: 100%;
+}
+
+header {
+  background-color: grey;
+}
+
+#section1 {
+  color: #F0F3F4;
+  text-align: center;
+}
+
+
+#title {
+  font-family:"Comic Sans MS", sans-serif, Arial;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+main {
+  /* The image used */
+  background: linear-gradient(to top, white, grey);
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.box {
+  box-sizing: border-box;
+  width: 240px;
+  height: 30px;
+  color: #17202A;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.w3-btn {
+  background-color: #FFF8DC;
+  clear: both;
+}
+
+#flashes, #cancel {
+  width: 1000px;
+  margin-left: 400px;
+  margin-right: auto;
+  text-align: center;
+}
+
+
+#funfacts {
+  width: 800px;
+  margin-left: 200px;
+  margin-right: auto;
+}
+
+#signup {
+  width: 80px;
+  height: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#form {
+  width: 400px;
+  margin-left: 800px;
+  margin-right: auto;
+}
+
+#host {
+  float: left;
+  color: #DEB887;
+  margin-left: 300px;
+  margin-right: auto;
+}
+
+#guest {
+  float: right;
+  color: #DEB887;
+  margin-left: auto;
+  margin-right: 300px;
+}

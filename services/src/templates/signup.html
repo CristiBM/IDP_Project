@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A brand-new home-sharing web platform">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FindATutor</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/signup_style.css') }}"/>
+  </head>
+  <body>
+    <header>
+      <div id="section1">
+        <div id="title">
+          <h1>FindATutor</h1>
+        </div>
+        <div id="subtitle">
+          <h3>A platform for students in search of the right tutor</h3>
+        </div>
+      </div>
+    </header>
+    <main>
+      <br/>
+      <br/>
+      <br/>
+      <div id="mainsection">
+        <div id="form">
+        <h3>Fill in the following fields, necessary for creating an account:</h3>
+        <br/>
+        <!-- Displaying the success/fail message for the SignUp-->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li style="color:orange">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <!--Making use of wtforms python form validation library-->
+        {% from "_formhelpers.html" import render_field %}
+        <form method=post>
+          {{ render_field(form.name) }}
+          {{ render_field(form.address) }}
+          {{ render_field(form.mail) }}
+          {{ render_field(form.phone) }}
+          {{ render_field(form.username) }}
+          {{ render_field(form.password) }}
+          <input type="submit" value="Submit"/>
+        </form>
+        </div>
+      </div>
+    </main>
+  </body>
+
+</html>

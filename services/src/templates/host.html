@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A brand-new home-sharing web platform">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FindATutor</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/host_style.css') }}"/>
+  </head>
+  <body>
+    <header>
+      <div id="section1">
+        <div id="title">
+          <h1>FindATutor</h1>
+        </div>
+        <div id="subtitle">
+          <h3>A platform for students in search of the right tutor</h3>
+        </div>
+      </div>
+    </header>
+    <main>
+      <br/>
+      <br/>
+      <br/>
+      <div id="mainsection">
+        <br/>
+        <br/>
+        <div id="form">
+          <h3>Fill in the following details:</h3>
+          <br/>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul class=flashes>
+              {% for message in messages %}
+                <li style="color:orange"><b>{{ message }}</b></li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+          {% from "_formhelpers.html" import render_field %}
+          <form method=post>
+            {{ render_field(form.subject) }}
+            {{ render_field(form.experience) }}
+            {{ render_field(form.price) }}
+            {{ render_field(form.channel) }}
+            <br/>
+            <input type="submit" value="Submit"/>
+          </form>
+        </div>
+
+      </div>
+    </main>
+  </body>
+
+</html>

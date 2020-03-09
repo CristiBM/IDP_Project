@@ -1,0 +1,19 @@
+#section1 {
+  background-color: grey;
+  color: #F0F3F4;
+  text-align: center;
+}
+
+#title {
+  font-family:"Comic Sans MS", sans-serif, Arial;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#form {
+  width: 900px;
+  margin-left: 400px;
+  margin-right: auto;
+}

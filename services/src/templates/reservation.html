@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A brand-new home-sharing web platform">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HomMe</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/reservation.css') }}"/>
+  </head>
+  <body>
+    <header>
+      <div id="section1">
+        <div id="title">
+          <h1>HomMe!</h1>
+        </div>
+        <div id="subtitle">
+          <h3>Hottest home-sharing web platform in town</h3>
+        </div>
+      </div>
+    </header>
+    <main>
+      <br/>
+      <br/>
+      <br/>
+      <div id="mainsection">
+        <h3>Fill in the following details:</h3>
+        <br/>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+              <li style="color:orange"><b>{{ message }}</b></li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        {% from "_formhelpers.html" import render_field %}
+        <form method=post>
+          {{ render_field(form.locationid) }}
+          {{ render_field(form.firstday) }}
+          {{ render_field(form.lastday) }}
+          {{ render_field(form.guests) }}
+          {{ render_field(form.payby) }}
+          {{ render_field(form.cardno) }}
+          <input type="submit" value="Submit"/>
+        </form>
+      </div>
+    </main>
+  </body>
+
+</html>

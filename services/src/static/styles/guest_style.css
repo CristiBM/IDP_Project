@@ -1,0 +1,34 @@
+#section1 {
+  background-color: grey;
+  color: #F0F3F4;
+  text-align: center;
+}
+
+#title {
+  font-family:"Comic Sans MS", sans-serif, Arial;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.w3-btn {
+  background-color: #27AE60;
+}
+
+#mainsection {
+  width: 1000px;
+  margin-left: 200px;
+  margin-right: auto;
+}
+
+#reserve {
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}

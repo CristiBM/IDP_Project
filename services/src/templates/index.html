@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A platform facilitating the search of tutors for students">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FindATutor</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/home_style.css') }}"/>
+  </head>
+  <body>
+    <header>
+      <div id="section1">
+        <div id="title">
+          <h1>FindATutor</h1>
+        </div>
+        <div id="subtitle">
+          <h3>A platform for students in search of the right tutor</h3>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div id="mainsection">
+        <div class="box">
+            <h4>Don't have an account? Create one</h4>
+        </div>
+        <div id="signup">
+          <button class="w3-btn"><a href="./signup.html" target="_blank">Sign up</a></button>
+        </div>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div id=flashes>
+            <ul class=flashes>
+              <li style="color:green"><b>{{ messages.0 }}</b></li>
+            </ul>
+            </div>
+          {% endif %}
+          {% endwith %}
+
+          <div id="form">
+            <!--Making use of wtforms python form validation library-->
+            {% from "_formhelpers.html" import render_field %}
+            <form method=post>
+              {{ render_field(form1.username) }}
+              {{ render_field(form1.passwd) }}
+              <input type="submit" value="Log In" name="username"/>
+            </form>
+          </div>
+          <br/>
+          <br/>
+          <div id="links">
+            <a href="./host.html" target="_blank">
+            <span id="host">
+                <h1 style="display:inline;">Become a tutor</h1>
+            </span>
+            </a>
+            <a href="./guest.html" target="_blank">
+            <span id="guest">
+              <h1 style="display:inline;">Find a tutor</h1>
+            </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+
+</html>
