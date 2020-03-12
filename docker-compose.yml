@@ -13,7 +13,7 @@ services:
       db_netw:
         ipv4_address: 172.31.0.4
     volumes:
-      - .:/var/lib/airplane_service
+      - .:/var/lib/tutorFinder_service
 
   db:
     image: mysql:5.7
@@ -22,19 +22,19 @@ services:
       - "32000:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Flights
+      MYSQL_DATABASE: tutorFinder
       MYSQL_USER: bmc
       MYSQL_PASSWORD: student
     networks:
       db_netw:
         ipv4_address: 172.31.0.2
     volumes:
-      - ./db_data_homew2:/var/lib/mysql
+      - ./db_data_homew:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: always
 
 volumes:
-  db_data_homew2: {}
+  db_data_homew: {}
 
 # See https://github.com/docker/labs/blob/master/networking/A2-bridge-networking.md
 # and https://docs.docker.com/compose/networking/
