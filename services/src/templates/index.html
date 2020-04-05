@@ -39,11 +39,12 @@
           {% if messages %}
             <div id=flashes>
             <ul class=flashes>
-              <li style="color:green"><b>{{ messages.0 }}</b></li>
+                {% if var == 1 %}
+                    <li style="color:green"><b>{{ messages.0 }}</b></li>
+                {% endif %}
             </ul>
             </div>
           {% endif %}
-          {% endwith %}
 
           <div id="form">
             <!--Making use of wtforms python form validation library-->
@@ -68,6 +69,19 @@
             </span>
             </a>
           </div>
+          <br/>
+          <br/>
+          <div class=fflash>
+          <h2>Students interested in your services:</h2>
+            {% if messages %}
+            {% for i in range(messages| length) %}
+                {% if i != 0 %}
+                  <li> <input type="submit" name="Student" class="students" value="{{ messages[i] }}"></li>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+          </div>
+          {% endwith %}
         </div>
       </div>
     </main>

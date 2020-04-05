@@ -42,8 +42,8 @@
           {% if messages %}
             <ul class=flashes>
               {% for message in messages %}
-                  <li style="border-style: groove;"><b>{{ message }}</b></li>
-                  <br/>
+              <li> <form method=post><input type="submit" onclick="alert('The tutor was notified!')" name="Tutor" class="tutors" value="{{ message }}"> </form></li>
+                <br/>
               {% endfor %}
             </ul>
           {% endif %}

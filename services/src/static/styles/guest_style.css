@@ -16,6 +16,13 @@ a {
   text-decoration: none;
 }
 
+input.tutors {
+    width: 80em;  height: 3em;
+    font-family: sans-serif,Arial;
+    font-size: 20px;
+    text-align: left;
+}
+
 .w3-btn {
   background-color: #27AE60;
 }

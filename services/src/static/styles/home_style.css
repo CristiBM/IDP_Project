@@ -38,6 +38,20 @@ main {
   background-size: cover;
 }
 
+.fflash {
+  width: 1000px;
+  margin-left: 400px;
+  margin-right: auto;
+  text-align: center;
+}
+
+input.students {
+    width: 50em;  height: 3em;
+    font-family: sans-serif,Arial;
+    font-size: 20px;
+    text-align: left;
+}
+
 .box {
   box-sizing: border-box;
   width: 240px;
@@ -53,7 +67,7 @@ main {
   clear: both;
 }
 
-#flashes, #cancel {
+#flashes {
   width: 1000px;
   margin-left: 400px;
   margin-right: auto;
