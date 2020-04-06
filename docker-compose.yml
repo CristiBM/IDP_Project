@@ -1,7 +1,7 @@
 version:  '3'
 services:
   server:
-    build: ./services
+    image: bmcristi/idp_project_findatutor:latest
     # links this service to another container. See https://medium.com/@shamir.stav_83310/dockerizing-a-flask-mysql-app-with-docker-compose-c4f51d20b40d
     links:
       - db
