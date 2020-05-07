@@ -1,12 +1,14 @@
 version:  '3'
 services:
   server:
-    image: bmcristi/idp_project_findatutor:latest
+    #image: bmcristi/idp_project_findatutor:latest
     # links this service to another container. See https://medium.com/@shamir.stav_83310/dockerizing-a-flask-mysql-app-with-docker-compose-c4f51d20b40d
+    build: ./services
     links:
       - db
     depends_on:
       - db
+      - redis
     ports:
       - "5000:5000"
     networks:
@@ -14,6 +16,16 @@ services:
         ipv4_address: 172.31.0.4
     volumes:
       - .:/var/lib/tutorFinder_service
+
+  worker:
+    #image: bmcristi/idp_project_findatutor:worker
+    build: ./worker
+    depends_on:
+      - db
+      - redis
+    networks:
+      db_netw:
+        ipv4_address: 172.31.0.5
 
   db:
     image: mysql:5.7
@@ -35,6 +47,19 @@ services:
       - ./db_data_homew:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: always
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass root
+    ports:
+      - "6379:6379"
+    environment:
+     - REDIS_REPLICATION_MODE=master
+    networks:
+      db_netw:
+        ipv4_address: 172.31.0.3
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
 
 volumes:
   db_data_homew: {}

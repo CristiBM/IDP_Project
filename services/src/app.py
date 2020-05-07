@@ -8,6 +8,7 @@ from wtforms.fields.html5 import DateField
 import fileinput
 import json
 import mysql.connector
+import redis
 import sys
 from uuid import uuid4
 
@@ -29,6 +30,8 @@ DB_NAME = 'tutorFinder'
 
 # waiting for the database to initialize
 sleep(15)
+
+cache = redis.Redis(host='redis', port=6379, password='root')
 
 try:
     connection = mysql.connector.connect(**config)
@@ -80,17 +83,37 @@ def home():
     form1 = LogInForm(request.form)
     welcome = 0
     if request.method == 'POST' and form1.validate():
+        found = False
+        realName = ''
         try:
-            res = cursor.callproc('searchUser', (form1.passwd.data, form1.username.data, None, None))
+            # First we look in the cache
+            password = cache.hget("userName_passwdH", form1.username.data)
+            if password and (str(password, 'utf-8') == form1.passwd.data):
+                found = True
+                realName = str(cache.hget("userName_realnameH", form1.username.data), 'utf-8')
+                eprint('<<<Taking it from the cache>>Real name is ' + realName)
+            # No luck so we have to go to the backend DB
+            else:
+                eprint('<<<Not in the cache>>>')
+                res = cursor.callproc('searchUser', (form1.passwd.data, form1.username.data, None, None))
+                found = res[2]
+                realName = res[3]
+                # Since we found it here, we also bring it into cache
+                if found:
+                    eprint('Putting it in cache')
+                    cache.hset("userName_passwdH", form1.username.data, form1.passwd.data)
+                    cache.hset("userName_realnameH", form1.username.data, realName)
         except mysql.connector.Error as err:
             print(err)
             return Response('An exception occurred: ' + str(err))
-        if res[2]:
+        
+        if found:
             global current_user
             global current_user_name
             current_user = form1.username.data
-            current_user_name = res[3]
-            flash('Welcome, ' + res[3] + '!')
+            current_user_name = realName
+            flash('Welcome, ' + realName + '!')
+        # Not in cache, not in DB.. you leave me no choice
         else:
             flash('Invalid credentials')
         welcome = 1
@@ -128,11 +151,18 @@ def create_account():
     form = SignUpForm(request.form)
     if request.method == 'POST' and form.validate():
         try:
-            cursor.callproc('createUser', (form.username.data, form.password.data, form.name.data, form.address.data, form.mail.data, form.phone.data))
-            connection.commit()
-        except mysql.connector.Error as err:
-            print(err)
-            return Response('An exception occurred: ' + str(err))
+            data = {
+                'username'  : form.username.data,
+                'password'  : form.password.data,
+                'name'      : form.name.data,
+                'address'   : form.address.data,
+                'mail'      : form.mail.data,
+                'phone'     : form.phone.data
+            }
+            cache.rpush('queue:users', json.dumps(data))
+        except Exception as e:
+            print(e)
+            return Response('An exception occured: ' + str(e))
         flash('Your account has been successfully created.')
     if request.method == 'POST' and not form.validate():
         flash('Invalid fields')
@@ -145,11 +175,18 @@ def register_host():
     tutor_id = str(uuid4())
     if request.method == 'POST' and form.validate():
         try:
-            cursor.callproc('createTutor', (tutor_id, current_user, form.subject.data, form.experience.data, form.channel.data, form.price.data))
-            connection.commit()
-        except mysql.connector.Error as err:
-            print(err)
-            return Response('An exception occured: ' + str(err))
+            data = {
+                'tutid'     : tutor_id,
+                'user'      : current_user,
+                'subject'   : form.subject.data,
+                'xp'        : form.experience.data,
+                'channel'   : form.channel.data,
+                'price'     : form.price.data
+            }
+            cache.rpush('queue:tutors', json.dumps(data))
+        except Exception as e:
+            print(e)
+            return Response('An exception occured: ' + str(e))
         flash('Great! You are officialy registered as a mentor!')
     if request.method == 'POST' and not form.validate():
         flash('Invalid fields')
@@ -180,27 +217,22 @@ def search_locations():
     global current_user
 
     form = SearchFilterForm(request.form)
-    eprint(request.form)
-    eprint('-----')
     if request.method == 'POST' and form.validate():
         subject_filter = False
         town_filter = False
         maxprice_filter = False
 
-        eprint('Here it is:')
-        eprint(lastTutorSearchDict)
-        eprint('ALSO:')
-        eprint(request.form)
         if 'Tutor' in request.form or form.Tutor.data:
             tutorName = request.form['Tutor'].split("|")[0].strip()
             try:
-                cursor.callproc('insertMatch', (lastTutorSearchDict[tutorName], current_user))
-                connection.commit()
-
-                eprint('Inserted a Match!!!!!! -> ' + lastTutorSearchDict[tutorName] + ' ' + current_user)
-            except mysql.connector.Error as err:
-                print(err)
-                return Response('An exception occured: ' + str(err))
+                data = {
+                    'tutor'     : lastTutorSearchDict[tutorName],
+                    'student'   : current_user
+                }
+                cache.rpush('queue:matches', json.dumps(data))
+            except Exception as e:
+                print(e)
+                return Response('An exception occured: ' + str(e))
 
 
         if form.subject.data:
