@@ -23,7 +23,6 @@ namespace ConsoleApp1
                 Wait 15s for the initialization of the databases
             */
             Thread.Sleep(15000);
-            Console.WriteLine("Hello, world!");
 
             MySqlConnection mysqlConn = new MySqlConnection();
             mysqlConn.ConnectionString = "server=db;user=root;database=tutorFinder;port=3306;password=root";
@@ -57,7 +56,6 @@ namespace ConsoleApp1
                     if (json != null)
                     {
                         var userData = JsonConvert.DeserializeAnonymousType(json, userDataTemplate);
-                        Console.WriteLine($"Processing '{userData.name}' by '{userData.password}'");
                         
                         cmd1.CommandText = "createUser";
                         cmd1.CommandType = CommandType.StoredProcedure;
@@ -97,8 +95,6 @@ namespace ConsoleApp1
                     if (json != null)
                     {
                         var tutorData = JsonConvert.DeserializeAnonymousType(json, tutorDataTemplate);
-
-                        Console.WriteLine($"Processing tutor data: '{tutorData.user}'");
                         
                         cmd2.CommandText = "createTutor";
                         cmd2.CommandType = CommandType.StoredProcedure;
@@ -134,8 +130,6 @@ namespace ConsoleApp1
                     if (json != null)
                     {
                         var matchData = JsonConvert.DeserializeAnonymousType(json, matchDataTemplate);
-
-                        Console.WriteLine($"Processing a match: '{matchData.tutor}', '{matchData.student}'");
                     
                         cmd3.CommandText = "insertMatch";
                         cmd3.CommandType = CommandType.StoredProcedure;

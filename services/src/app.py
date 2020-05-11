@@ -118,6 +118,7 @@ def home():
             flash('Invalid credentials')
         welcome = 1
 
+    studentsFound = 0
     if current_user:
         try:
             # in res[2] we may find the tutorId corresponding to the current user
@@ -135,7 +136,7 @@ def home():
                             while (entry_max_len - len(str(field)) - 5) > 0:
                                 entry_str += '\t'
                                 entry_max_len -= 4
-
+                        studentsFound = 1
                         flash(entry_str)
         except mysql.connector.Error as err:
                 print(err)
@@ -143,7 +144,7 @@ def home():
 
 
 
-    return render_template('index.html', form1=form1, var=welcome)
+    return render_template('index.html', form1=form1, var=welcome, var2=studentsFound)
 
 
 @app.route('/signup.html', methods=['GET','POST'])

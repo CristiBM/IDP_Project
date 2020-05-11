@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS tutors (
                     experience smallint not null,
                     channel enum('AtResidence', 'Online') not null,
                     price float not null,
+                    timest timestamp not null,
                     PRIMARY KEY (tut_id)
                   ) ENGINE=INNODB;
 
@@ -77,8 +78,8 @@ DELIMITER //
 CREATE PROCEDURE createTutor(tutId varchar(50), userName varchar(20), subject varchar(20), experience smallint,
                               channel varchar(20), price float)
   BEGIN
-    INSERT INTO tutors (tut_id, username, subject, experience, channel, price)
-      VALUES (tutId, userName, subject, experience, channel, price);
+    INSERT INTO tutors (tut_id, username, subject, experience, channel, price, timest)
+      VALUES (tutId, userName, subject, experience, channel, price, CURRENT_TIMESTAMP());
   END//
 
 
